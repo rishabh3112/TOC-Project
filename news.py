@@ -38,9 +38,9 @@ def google_news_run(keyword, offset=0, language='en', limit=10, sleep_time_every
         try:
             response = requests.get(url, headers=headers, timeout=20)
             links = extract_links(response.content)
+            result.extend(links)
             if len(links) < 10:
               break
-            result.extend(links)
         except requests.exceptions.Timeout:
             pass
         time.sleep(sleep_time_every_ten_articles)
@@ -48,7 +48,6 @@ def google_news_run(keyword, offset=0, language='en', limit=10, sleep_time_every
 
 def get_news(q, offset):
     res = google_news_run(keyword=[q], offset=offset)
-    print(res)
     results = []
     for link in res:
         try:

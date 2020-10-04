@@ -2,13 +2,15 @@ import React from "react";
 import ReactDOM from "react-dom";
 import Store from "./Store";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
+import Routes from "./routes/allRoutes";
 
+const { Home, Results, News } = Routes;
 const App = () => {
   return (
     <BrowserRouter>
       <Store>
         <Switch>
-          <Route path="/" component={Home} />
+          <Route path="/" component={Home} exact />
           <Route path="/results/:page" component={Results} />
           <Route path="/news/:page/:index" component={News} />
           <Route component={Error} />
@@ -18,4 +20,4 @@ const App = () => {
   );
 };
 
-ReactDOM.render(App, document.getElementById("root"));
+ReactDOM.render(<App/>, document.getElementById("root"));
