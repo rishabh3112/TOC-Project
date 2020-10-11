@@ -6,7 +6,7 @@ import re
 from textblob import TextBlob
 from fake_useragent import UserAgent
 from newspaper import Article
-
+from summary import SimpleSummarizer
 class URL:
     def __init__(self, language='en'):
         if language == 'en':
@@ -47,6 +47,8 @@ def google_news_run(keyword, offset=0, language='en', limit=10, sleep_time_every
     return result
 
 def get_news(q, offset):
+    summarizer = SimpleSummarizer()
+    summarizer.summarize("The use of the else clause is better than adding additional code to the try clause because it avoids accidentally catching an exception that wasn’t raised by the code being protected by the try … except statement. When an exception occurs, it may have an associated value, also known as the exception’s argument. The presence and type of the argument depend on the exception type. The except clause may specify a variable after the exception name. The variable is bound to an exception instance with the arguments stored in instance.args. For convenience, the exception instance defines __str__() so the arguments can be printed directly without having to reference .args. One may also instantiate an exception first before raising it and add any attributes to it as desired.", 5)
     res = google_news_run(keyword=[q], offset=offset)
     results = []
     for link in res:
@@ -62,10 +64,12 @@ def get_news(q, offset):
             link["content"] = a.text
             link["authors"] = a.authors
             link["polarity"] = tb.sentiment.polarity
+            link["summary"] = summarizer.summarize(a.text, 3)
             link["sentiment"] = 'positive' if link["polarity"] > 0 else 'negative' if link["polarity"] < 0 else 'neutral' 
             link["subjectivity"] = tb.sentiment.subjectivity
             link["image"] = a.top_image
             results.append(link)
         except:
+            print()
             continue
     return results

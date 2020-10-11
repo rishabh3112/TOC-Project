@@ -3,6 +3,7 @@ import ReactDOM from "react-dom";
 import Store from "./Store";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import Routes from "./routes/allRoutes";
+import "./styles.css"
 
 const { Home, Results, News } = Routes;
 const App = () => {

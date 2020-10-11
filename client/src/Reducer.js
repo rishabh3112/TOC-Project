@@ -1,9 +1,16 @@
 const Reducer = (state, action) => {
   switch (action.type) {
-      case 'ADD_PAGE':
+      case 'STASH_PAGE':
+        return {
+          ...state,
+          pages: {}
+        }
+      case 'SET_PAGE':
+          const pages = state.pages;
+          pages[action.payload.page] = action.payload.data
           return {
               ...state,
-              pages: [...state.pages, action.payload]
+              pages
           };
       case 'SET_QUERY':
         return {

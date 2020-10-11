@@ -1,0 +1,62 @@
+.banner__home {
+  width: 100%;
+  min-height: 200px;
+  background: url('https://www.transparenttextures.com/patterns/escheresque.png'), #000;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  flex-direction: column;
+}
+
+.search__home {
+  position: relative;
+  height: 50px;
+  padding: 10px;
+  top: 35px;
+  border-radius: 10px;
+  background-color: #666;
+  width: 100%;
+  max-width: 500px;
+  display: flex;
+  justify-content: center;
+}
+
+.search__home input {
+  background-color: transparent;
+  border: none;
+  color: white;
+  font-size: 25px;
+  border-bottom: #fff 2px solid;
+  text-align: center;
+  width: 80%;
+}
+
+.search__home input:focus {
+  background: linear-gradient(transparent, #444);
+  outline: none;
+}
+
+.search__home button {
+  background-color: #7cc;
+  border: none;
+  height: 100%;
+  width: 50px;
+  margin-left: 10px;
+  color: #fff;
+  border-radius: 50%;
+}
+
+.search__home button:hover {
+  box-shadow: 0px 0px 20px #555;
+  cursor: pointer;
+}
+
+.banner-heading__home {
+  color: #fff;
+}
+
+.banner-icon__home {
+  margin-left: 2px;
+  position: relative;
+  top: -10px;
+}

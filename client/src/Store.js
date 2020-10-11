@@ -3,8 +3,9 @@ import Reducer from './Reducer'
 
 
 const initialState = {
+    base: "http://localhost:5000",
     query: "",
-    pages: []
+    pages: {}
 };
 
 const Store = ({children}) => {
