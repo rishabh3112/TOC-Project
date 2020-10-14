@@ -1,6 +1,7 @@
 import React, { useEffect, useContext, useState } from "react";
 import { Context } from "../../Store";
 import { Link } from "react-router-dom";
+import "./styles.css";
 
 export default (props) => {
   const [state, dispatch] = useContext(Context);
@@ -13,7 +14,7 @@ export default (props) => {
             return response.json();
           }
           console.log(response.text());
-          return {};
+          return [];
         })
         .then((articles) => {
           dispatch({
@@ -23,30 +24,64 @@ export default (props) => {
               data: articles,
             },
           });
+        })
+        .catch((err) => {
+          const fakeData = [
+            {
+              title: "Not Found",
+              link: "/",
+              date: "4hrs ago",
+              sentiment: "Positive",
+              summary: "AALKDLKSDGKJHGKJHSKJHDGKJHDSGKJHSGDKJHGSDK",
+            },
+          ];
+          dispatch({
+            type: "SET_PAGE",
+            payload: {
+              page: pageNumber,
+              data: fakeData,
+            },
+          });
         });
     }
   }, []);
 
   if (!state.pages[pageNumber]) {
-    return <Loader active />;
+    return (
+      <div style={{ color: "#fff" }}>
+        <h2>Results for {state.query}</h2>
+        <div style={{ padding: "25px" }}>Loading...</div>
+      </div>
+    );
   }
 
   const cards = state.pages[pageNumber].map((article) => {
     return (
-      <div key={article.link}>
-          <h3>{article.title}</h3>
-          <span>
-            {article.sentiment}
-            <span style={{ float: "right" }}>{article.date}</span>
+      <div className="result-card__results" key={article.link}>
+        <a className="result-title__results" href={article.link}>
+          {article.title}
+        </a>
+        <span className="result-metadata__results">
+          <span className="result-date__results">
+            <span className="material-icons">signal_cellular_alt</span>
+            <span style={{ marginLeft: "2px" }}>{article.sentiment}</span>
           </span>
+          <span className="result-date__results" style={{ float: "right" }}>
+            <span className="material-icons">event</span>
+            <span style={{ marginLeft: "2px" }}>{article.date}</span>
+          </span>
+        </span>
+        <p className="result-desc__results">
+          {article.summary.slice(0, 400)}...
+        </p>
       </div>
     );
   });
 
   return (
-    <div style={{ padding: "25px" }}>
+    <div style={{ color: "#fff" }}>
       <h2>Results for {state.query}</h2>
-      <div>
+      <div className="results__results" style={{ padding: "25px" }}>
         {cards}
       </div>
     </div>
