@@ -4,9 +4,9 @@ from bs4 import BeautifulSoup
 import time
 import re
 from textblob import TextBlob
-from fake_useragent import UserAgent
 from newspaper import Article
 from summary import SimpleSummarizer
+
 class URL:
     def __init__(self, language='en'):
         if language == 'en':
@@ -27,14 +27,13 @@ def extract_links(content):
     return output
 
 def google_news_run(keyword, offset=0, language='en', limit=10, sleep_time_every_ten_articles=10):
-    ua = UserAgent()
     uf = URL(language)
     result = []
     start = 0
     while start < 10:
         url = uf.create(keyword, start + offset*10)
         start += 10
-        headers = {'User-Agent': ua.chrome}
+        headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
         try:
             response = requests.get(url, headers=headers, timeout=20)
             links = extract_links(response.content)

@@ -7,7 +7,9 @@ export default (props) => {
   const [state, dispatch] = useContext(Context);
   const pageNumber = props.match.params.page;
   useEffect(() => {
+    console.log(state.pages[pageNumber]);
     if (!state.pages[pageNumber]) {
+      console.log('SENDING REQUEST!');
       fetch(`${state.base}/api/${state.query}/${pageNumber}`)
         .then((response) => {
           if (response.ok) {
@@ -32,6 +34,8 @@ export default (props) => {
               link: "/",
               date: "4hrs ago",
               sentiment: "Positive",
+              subjectivity: 0.124567,
+              content: "AALKDLKSDGKJHGKJHSKJHDGKJHDSGKJHSGDKJHGSDK",
               summary: "AALKDLKSDGKJHGKJHSKJHDGKJHDSGKJHSGDKJHGSDK",
             },
           ];
@@ -44,35 +48,49 @@ export default (props) => {
           });
         });
     }
-  }, []);
+  }, [pageNumber]);
 
   if (!state.pages[pageNumber]) {
     return (
       <div style={{ color: "#fff" }}>
         <h2>Results for {state.query}</h2>
-        <div style={{ padding: "25px" }}>Loading...</div>
+        <div style={{ padding: "25px" }}>
+          <div className="cssload-thecube">
+            <div className="cssload-cube cssload-c1"></div>
+            <div className="cssload-cube cssload-c2"></div>
+            <div className="cssload-cube cssload-c4"></div>
+            <div className="cssload-cube cssload-c3"></div>
+          </div>
+        </div>
       </div>
     );
   }
 
-  const cards = state.pages[pageNumber].map((article) => {
+  const cards = state.pages[pageNumber].map((article, index) => {
     return (
       <div className="result-card__results" key={article.link}>
-        <a className="result-title__results" href={article.link}>
+        <Link className="result-title__results" to={`/news/${pageNumber}/${index}`}>
           {article.title}
-        </a>
+        </Link>
         <span className="result-metadata__results">
           <span className="result-date__results">
             <span className="material-icons">signal_cellular_alt</span>
             <span style={{ marginLeft: "2px" }}>{article.sentiment}</span>
           </span>
-          <span className="result-date__results" style={{ float: "right" }}>
+          <span className="result-date__results">
+            <span className="material-icons">fact_check</span>
+            <span style={{ marginLeft: "2px" }}>
+              {100 - Math.round(article.subjectivity * 100)}%
+            </span>
+          </span>
+          <span className="result-date__results">
             <span className="material-icons">event</span>
             <span style={{ marginLeft: "2px" }}>{article.date}</span>
           </span>
         </span>
         <p className="result-desc__results">
-          {article.summary.slice(0, 400)}...
+          <b>Summary: </b>
+          {article.summary}
         </p>
       </div>
     );
@@ -80,10 +98,18 @@ export default (props) => {
 
   return (
     <div style={{ color: "#fff" }}>
-      <h2>Results for {state.query}</h2>
-      <div className="results__results" style={{ padding: "25px" }}>
-        {cards}
-      </div>
+        <Link to={"/results/" + (parseInt(pageNumber) + 1).toString()}>
+          <button className="next_article">
+            Next page
+            <span className="material-icons">
+              navigate_next
+            </span>
+          </button>
+        </Link>
+      <h2>
+        Results for <span class="result-query">{state.query}</span>
+      </h2>
+      <div className="results__results">{cards}</div>
     </div>
   );
 };

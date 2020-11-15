@@ -1,24 +1,24 @@
 .banner__home {
   width: 100%;
-  min-height: 200px;
   background: #333;
   display: flex;
+  padding-top: 35px;
   align-items: center;
   justify-content: flex-end;
   flex-direction: column;
-  border-radius: 0px 0px 100px 100px;
 }
 
 .search__home {
   position: relative;
   height: 50px;
   padding: 10px;
-  top: 35px;
+  top: 30px;
   border-radius: 10px;
   background-color: #666;
   width: 100%;
   max-width: 500px;
   display: flex;
+  z-index: 999;
   justify-content: center;
 }
 
@@ -53,6 +53,8 @@
 }
 
 .banner-heading__home {
+  padding-left: 20px;
+  padding-right: 20px;
   color: #fff;
 }
 
