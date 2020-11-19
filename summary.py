@@ -9,10 +9,7 @@ class SimpleSummarizer:
 		output_sentences.sort(key=input.find)
 		return output_sentences
 	
-	def get_summarized(self, input, num_sentences ):
-		# TODO: allow the caller to specify the tokenizer they want
-		# TODO: allow the user to specify the sentence tokenizer they want
-		
+	def get_summarized(self, input, num_sentences ):		
 		tokenizer = RegexpTokenizer('\w+')
 		
 		# get the frequency of each word in the input

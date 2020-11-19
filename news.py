@@ -1,11 +1,27 @@
 import json
 import requests
-from bs4 import BeautifulSoup
 import time
 import re
+import types
+
+from bs4 import BeautifulSoup
 from textblob import TextBlob
 from newspaper import Article
 from summary import SimpleSummarizer
+from joblib import load
+from nltk.tokenize import word_tokenize
+
+clf = load('model.h5')
+word_features = load('wf.arr')
+
+def preprocess(headline):
+    words = word_tokenize(headline)
+    features = {}
+    for word in word_features:
+        features[word] = (word in words)
+    return features
+
+print(clf.classify(preprocess("Apple")))
 
 class URL:
     def __init__(self, language='en'):
@@ -47,17 +63,19 @@ def google_news_run(keyword, offset=0, language='en', limit=10, sleep_time_every
 
 def get_news(q, offset):
     summarizer = SimpleSummarizer()
-    summarizer.summarize("The use of the else clause is better than adding additional code to the try clause because it avoids accidentally catching an exception that wasn’t raised by the code being protected by the try … except statement. When an exception occurs, it may have an associated value, also known as the exception’s argument. The presence and type of the argument depend on the exception type. The except clause may specify a variable after the exception name. The variable is bound to an exception instance with the arguments stored in instance.args. For convenience, the exception instance defines __str__() so the arguments can be printed directly without having to reference .args. One may also instantiate an exception first before raising it and add any attributes to it as desired.", 5)
     res = google_news_run(keyword=[q], offset=offset)
     results = []
+
     for link in res:
         try:
             a = Article(link["link"])
             a.download()
             a.parse()
+
             tb = TextBlob(a.text)
             url_regex = r"(?i)\b((?:https?://|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:'\".,<>?«»“”‘’]))"
             urls = re.findall(url_regex, a.text)
+
             link["urls"] = [x[0] for x in urls]
             link["title"] = a.title
             link["content"] = a.text
@@ -67,8 +85,9 @@ def get_news(q, offset):
             link["sentiment"] = 'positive' if link["polarity"] > 0 else 'negative' if link["polarity"] < 0 else 'neutral' 
             link["subjectivity"] = tb.sentiment.subjectivity
             link["image"] = a.top_image
+            link["fake"] = str(clf.classify(preprocess(a.title)))
             results.append(link)
         except:
-            print()
             continue
+
     return results

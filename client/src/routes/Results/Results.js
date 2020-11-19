@@ -9,7 +9,7 @@ export default (props) => {
   useEffect(() => {
     console.log(state.pages[pageNumber]);
     if (!state.pages[pageNumber]) {
-      console.log('SENDING REQUEST!');
+      console.log("SENDING REQUEST!");
       fetch(`${state.base}/api/${state.query}/${pageNumber}`)
         .then((response) => {
           if (response.ok) {
@@ -69,7 +69,10 @@ export default (props) => {
   const cards = state.pages[pageNumber].map((article, index) => {
     return (
       <div className="result-card__results" key={article.link}>
-        <Link className="result-title__results" to={`/news/${pageNumber}/${index}`}>
+        <Link
+          className="result-title__results"
+          to={`/news/${pageNumber}/${index}`}
+        >
           {article.title}
         </Link>
         <span className="result-metadata__results">
@@ -87,6 +90,12 @@ export default (props) => {
             <span className="material-icons">event</span>
             <span style={{ marginLeft: "2px" }}>{article.date}</span>
           </span>
+          <span className="result-date__results">
+              <span className="material-icons">flaky</span>
+              <span style={{ marginLeft: "2px" }}>
+                {article.fake === "0" ? "Fake" : "Genuine"}
+              </span>
+            </span>
         </span>
         <p className="result-desc__results">
           <b>Summary: </b>
@@ -98,14 +107,12 @@ export default (props) => {
 
   return (
     <div style={{ color: "#fff" }}>
-        <Link to={"/results/" + (parseInt(pageNumber) + 1).toString()}>
-          <button className="next_article">
-            Next page
-            <span className="material-icons">
-              navigate_next
-            </span>
-          </button>
-        </Link>
+      <Link to={"/results/" + (parseInt(pageNumber) + 1).toString()}>
+        <button className="next_article">
+          Next page
+          <span className="material-icons">navigate_next</span>
+        </button>
+      </Link>
       <h2>
         Results for <span class="result-query">{state.query}</span>
       </h2>

@@ -33,11 +33,23 @@ export default (props) => {
               <span className="material-icons">event</span>
               <span style={{ marginLeft: "2px" }}>{article.date}</span>
             </span>
+            <span className="result-date__results">
+              <span className="material-icons">flaky</span>
+              <span style={{ marginLeft: "2px" }}>
+                {article.fake === "0" ? "Fake" : "Genuine"}
+              </span>
+            </span>
           </span>
         </div>
         <br />
         <p className="news_content">
-          <h4>News article (<a class="link" target="_blank" href={article.link}>Original Source</a>)</h4>
+          <h4>
+            News article (
+            <a class="link" target="_blank" href={article.link}>
+              Original Source
+            </a>
+            )
+          </h4>
           {article.content}
         </p>
       </div>

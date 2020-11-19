@@ -8,10 +8,8 @@ const Home = () => {
   const [query, setQuery] = useState(state.query);
 
   useEffect(() => {
-    if (query != state.query) {
-      dispatch({ type: "STASH_PAGES" });
-      dispatch({ type: "SET_QUERY", payload: query });
-    }
+    dispatch({ type: "STASH_PAGES" });
+    dispatch({ type: "SET_QUERY", payload: query });
   }, [query]);
 
   return (

@@ -3,3 +3,5 @@ a.json
 __pycache__
 node_modules
 dist
+.ipynb_checkpoints
+model.h5
