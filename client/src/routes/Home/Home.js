@@ -16,7 +16,7 @@ const Home = () => {
     <div className="home">
       <div className="banner__home">
         <h1 className="banner-heading__home">
-          News Reader 
+          News Analyser 
           <span className="banner-icon__home material-icons">
             article
           </span>
