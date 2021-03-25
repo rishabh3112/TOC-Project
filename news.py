@@ -34,12 +34,17 @@ class URL:
         return self.google_news_url.format(q,start)
 
 def extract_links(content):
+    # f = open("index.html", "w")
+    # f.write(content.decode('utf8'))
+    # f.close()
+
     soup = BeautifulSoup(content.decode('utf8'), 'lxml')
     blocks = [a for a in soup.find_all('div', {'class': ['dbsr']})]
+    source_list = [b.find('div', {'class': ['XTjFC', 'WF4CUc']}).text for b in blocks]
     links_list = [(b.find('a').attrs['href'], b.find('div', {'role': 'heading'}).text) for b in blocks]
     dates_list = [b.find('span', {'class': 'WG9SHc'}).text for b in blocks]
     assert len(links_list) == len(dates_list)
-    output = [{'link': l[0], 'title': l[1], 'date': d} for (l, d) in zip(links_list, dates_list)]
+    output = [{'link': l[0], 'title': l[1], 'date': d, 'source': s} for (l, d, s) in zip(links_list, dates_list,source_list)]
     return output
 
 def google_news_run(keyword, offset=0, language='en', limit=10, sleep_time_every_ten_articles=10):
@@ -49,7 +54,7 @@ def google_news_run(keyword, offset=0, language='en', limit=10, sleep_time_every
     while start < 10:
         url = uf.create(keyword, start + offset*10)
         start += 10
-        headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36'}
+        headers = {'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_6_8) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/49.0.2623.112 Safari/537.36'}
         try:
             response = requests.get(url, headers=headers, timeout=20)
             links = extract_links(response.content)

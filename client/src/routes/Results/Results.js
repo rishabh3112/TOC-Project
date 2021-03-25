@@ -3,8 +3,13 @@ import { Context } from "../../Store";
 import { Link } from "react-router-dom";
 import "./styles.css";
 
+const loadingTexts = ['Collecting News Articles', 'Analyzing News Content', 'Finalizing Results'];
+let intervalDots, intervalIndex;
 export default (props) => {
   const [state, dispatch] = useContext(Context);
+  const [loading, setLoading] = useState();
+  let dots = 0;
+  let index = 0;
   const pageNumber = props.match.params.page;
   useEffect(() => {
     console.log(state.pages[pageNumber]);
@@ -50,10 +55,20 @@ export default (props) => {
     }
   }, [pageNumber]);
 
+  if (!intervalDots) {
+    intervalDots = setInterval(() => {
+      dots = (dots + 1)%4;
+      setLoading(loadingTexts[index] + ".".repeat(dots));
+    }, 500);
+  
+    intervalIndex = setInterval(() => {
+      index = (index + 1)%3;
+    }, 4000);
+  }
+
   if (!state.pages[pageNumber]) {
     return (
       <div style={{ color: "#fff" }}>
-        <h2>Results for {state.query}</h2>
         <div style={{ padding: "25px" }}>
           <div className="cssload-thecube">
             <div className="cssload-cube cssload-c1"></div>
@@ -61,6 +76,7 @@ export default (props) => {
             <div className="cssload-cube cssload-c4"></div>
             <div className="cssload-cube cssload-c3"></div>
           </div>
+          <div class="loading">{loading}</div>
         </div>
       </div>
     );
@@ -76,6 +92,10 @@ export default (props) => {
           {article.title}
         </Link>
         <span className="result-metadata__results">
+          <span className="result-date__results">
+              <span className="material-icons">source</span>
+              <span style={{ marginLeft: "2px" }}>{article.source}</span>
+          </span>
           <span className="result-date__results">
             <span className="material-icons">signal_cellular_alt</span>
             <span style={{ marginLeft: "2px" }}>{article.sentiment}</span>
@@ -105,6 +125,9 @@ export default (props) => {
     );
   });
 
+  clearInterval(intervalDots);
+  clearInterval(intervalIndex);
+
   return (
     <div style={{ color: "#fff" }}>
       <Link to={"/results/" + (parseInt(pageNumber) + 1).toString()}>
@@ -113,9 +136,16 @@ export default (props) => {
           <span className="material-icons">navigate_next</span>
         </button>
       </Link>
-      <h2>
-        Results for <span class="result-query">{state.query}</span>
-      </h2>
+      <div className="result-heading">
+        <h2>News Curator 
+        <span className="banner-icon__home material-icons">
+          article
+        </span>
+        </h2>
+        <p>
+          Results for <span className="result-query">{state.query}</span>
+        </p>
+      </div>
       <div className="results__results">{cards}</div>
     </div>
   );

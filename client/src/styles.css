@@ -1,8 +1,9 @@
 body {
   padding: 0px;
   margin: 0px;
-  background: url('./pattern.png');
+  background: linear-gradient(to bottom, rgba(40, 40, 40, 0.65), #333), url('./pattern.png');
   background-attachment: fixed;
+  animation: wave infinite 10s linear;
 }
 
 #root {
@@ -17,4 +18,14 @@ body {
   display: inline-flex;
   vertical-align: middle;
   line-height: 1;
+}
+
+@keyframes wave {
+  0% {
+    background-position: 0px 0px;
+  }
+
+  100% {
+    background-position: 700px 0px;
+  }
 }

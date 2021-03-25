@@ -15,12 +15,14 @@ const Home = () => {
   return (
     <div className="home">
       <div className="banner__home">
-        <h1 className="banner-heading__home">
-          News Analyser 
+        <div className="banner-heading__home">
+          <h1>News Curator
           <span className="banner-icon__home material-icons">
             article
           </span>
-        </h1>
+          </h1>
+          {/* <div style={{textAlign: 'center'}}>Get news with brain!</div> */}
+        </div>
         <div className="search__home">
           <input type="text" value={query} onChange={(e) => setQuery(e.target.value)} />
           <Link to="/results/0">

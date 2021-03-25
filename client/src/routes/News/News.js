@@ -15,43 +15,51 @@ export default (props) => {
     }
 
     return (
-      <div className="news_container">
-        <div className="banner__home">
-          <h1 className="banner-heading__home">{article.title}</h1>
-          <span className="result-metadata__results">
-            <span className="result-date__results">
-              <span className="material-icons">signal_cellular_alt</span>
-              <span style={{ marginLeft: "2px" }}>{article.sentiment}</span>
-            </span>
-            <span className="result-date__results">
-              <span className="material-icons">fact_check</span>
-              <span style={{ marginLeft: "2px" }}>
-                {100 - Math.round(article.subjectivity * 100)}%
-              </span>
-            </span>
-            <span className="result-date__results">
-              <span className="material-icons">event</span>
-              <span style={{ marginLeft: "2px" }}>{article.date}</span>
-            </span>
-            <span className="result-date__results">
-              <span className="material-icons">flaky</span>
-              <span style={{ marginLeft: "2px" }}>
-                {article.fake === "0" ? "Fake" : "Genuine"}
-              </span>
-            </span>
+      <div>
+        <div className="news_container">
+        <h1 className="logo">News Curator
+          <span className="banner-icon__home material-icons">
+            article
           </span>
-        </div>
-        <br />
-        <p className="news_content">
-          <h4>
-            News article (
-            <a class="link" target="_blank" href={article.link}>
-              Original Source
+        </h1>
+          <div className="banner__home" style={{ background: `linear-gradient(to bottom, rgba(40, 40, 40, 0.65), #333), url('${article.image}')` }}>
+            <h1 className="banner-heading__home">{article.title}</h1>
+            <span className="result-metadata__results">
+              <span className="result-date__results">
+                <span className="material-icons">source</span>
+                <span style={{ marginLeft: "2px" }}>{article.source}</span>
+              </span>
+              <span className="result-date__results">
+                <span className="material-icons">signal_cellular_alt</span>
+                <span style={{ marginLeft: "2px" }}>{article.sentiment}</span>
+              </span>
+              <span className="result-date__results">
+                <span className="material-icons">fact_check</span>
+                <span style={{ marginLeft: "2px" }}>
+                  {100 - Math.round(article.subjectivity * 100)}%
+              </span>
+              </span>
+              <span className="result-date__results">
+                <span className="material-icons">event</span>
+                <span style={{ marginLeft: "2px" }}>{article.date}</span>
+              </span>
+              <span className="result-date__results">
+                <span className="material-icons">flaky</span>
+                <span style={{ marginLeft: "2px" }}>
+                  {article.fake === "0" ? "Fake" : "Genuine"}
+                </span>
+              </span>
+            </span>
+          </div>
+          <p className="news_content">
+            {article.content}
+            <h4>
+              <a className="link" target="_blank" href={article.link}>
+                Link to original source
             </a>
-            )
-          </h4>
-          {article.content}
-        </p>
+            </h4>
+          </p>
+        </div>
       </div>
     );
   } catch {
