@@ -4,9 +4,13 @@ import "./styles.css";
 
 export default (props) => {
   const [state, dispatch] = useContext(Context);
-  console.log(props);
+
   const pageNumber = props.match.params.page;
   const index = props.match.params.index;
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   try {
     const article = state.pages[pageNumber][index];
@@ -43,12 +47,12 @@ export default (props) => {
                 <span className="material-icons">event</span>
                 <span style={{ marginLeft: "2px" }}>{article.date}</span>
               </span>
-              <span className="result-date__results">
-                <span className="material-icons">flaky</span>
-                <span style={{ marginLeft: "2px" }}>
-                  {article.fake === "0" ? "Fake" : "Genuine"}
-                </span>
+              <span className={`result-date__results ${article.fake === "0" ? "fake" : "genuine"}`}>
+              <span className="material-icons">{article.fake === "0" ? "gpp_maybe" : "gpp_good"}</span>
+              <span style={{ marginLeft: "2px" }}>
+                {article.fake === "0" ? "Potentially Fake" : "Verified News"}
               </span>
+            </span>
             </span>
           </div>
           <p className="news_content">

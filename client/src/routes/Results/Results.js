@@ -8,9 +8,16 @@ let intervalDots, intervalIndex;
 export default (props) => {
   const [state, dispatch] = useContext(Context);
   const [loading, setLoading] = useState();
+
   let dots = 0;
   let index = 0;
+  
   const pageNumber = props.match.params.page;
+  
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   useEffect(() => {
     console.log(state.pages[pageNumber]);
     if (!state.pages[pageNumber]) {
@@ -110,10 +117,10 @@ export default (props) => {
             <span className="material-icons">event</span>
             <span style={{ marginLeft: "2px" }}>{article.date}</span>
           </span>
-          <span className="result-date__results">
-              <span className="material-icons">flaky</span>
+          <span className={`result-date__results ${article.fake === "0" ? "fake" : "genuine"}`}>
+              <span className="material-icons">{article.fake === "0" ? "gpp_maybe" : "gpp_good"}</span>
               <span style={{ marginLeft: "2px" }}>
-                {article.fake === "0" ? "Fake" : "Genuine"}
+                {article.fake === "0" ? "Potentially Fake" : "Verified News"}
               </span>
             </span>
         </span>
@@ -127,6 +134,7 @@ export default (props) => {
 
   clearInterval(intervalDots);
   clearInterval(intervalIndex);
+  intervalDots = null, intervalIndex = null;
 
   return (
     <div style={{ color: "#fff" }}>

@@ -1,16 +1,30 @@
 import React, { useEffect, useContext, useState } from "react";
 import { Context } from "../../Store";
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import "./styles.css";
 
 const Home = () => {
   const [state, dispatch] = useContext(Context);
   const [query, setQuery] = useState(state.query);
+  const [showResults, setShowResults] = useState(false);
+  const history = useHistory();
+
+  const handleClick = () => {
+    if (query != state.query) {
+      setShowResults(true);
+      dispatch({ type: "STASH_PAGES" });
+      dispatch({ type: "SET_QUERY", payload: query });
+    } else {
+      history.push("/results/0");
+    }
+  }
 
   useEffect(() => {
-    dispatch({ type: "STASH_PAGES" });
-    dispatch({ type: "SET_QUERY", payload: query });
-  }, [query]);
+    if (showResults) {
+      setShowResults(false);
+      history.push("/results/0");
+    }
+  }, [state.query]);
 
   return (
     <div className="home">
@@ -25,13 +39,11 @@ const Home = () => {
         </div>
         <div className="search__home">
           <input type="text" value={query} onChange={(e) => setQuery(e.target.value)} />
-          <Link to="/results/0">
-            <button>
+            <button onClick={handleClick}>
               <span className="material-icons">
                 search
               </span>
             </button>
-          </Link>
         </div>
       </div>
     </div>
