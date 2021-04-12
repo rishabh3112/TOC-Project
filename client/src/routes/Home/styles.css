@@ -14,7 +14,7 @@
   padding: 10px;
   border-radius: 10px;
   background-color: #333;
-  width: 100%;
+  width: calc(100% - 50px);
   max-width: 500px;
   display: flex;
   z-index: 999;
@@ -58,7 +58,7 @@
 }
 
 .banner-heading__home h1 {
-  font-size: 50px;
+  font-size: min(10vw, 50px);
 }
 
 .banner-icon__home {

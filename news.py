@@ -21,8 +21,6 @@ def preprocess(headline):
         features[word] = (word in words)
     return features
 
-print(clf.classify(preprocess("Apple")))
-
 class URL:
     def __init__(self, language='en'):
         if language == 'en':

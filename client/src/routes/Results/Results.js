@@ -22,7 +22,7 @@ export default (props) => {
     console.log(state.pages[pageNumber]);
     if (!state.pages[pageNumber]) {
       console.log("SENDING REQUEST!");
-      fetch(`${state.base}/api/${state.query}/${pageNumber}`)
+      fetch(`${state.base}/api/${encodeURIComponent(state.query)}/${pageNumber}`)
         .then((response) => {
           if (response.ok) {
             return response.json();
